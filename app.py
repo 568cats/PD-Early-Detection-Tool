@@ -34,11 +34,33 @@ def predict():
             predicted_class_index = np.argmax(class_prediction)
 
     return render_template('home.html', prediction=predicted_class_index)
+#2nd image route
+@app.route("/predict", methods = ['GET','POST'])
+def predict():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file_path = os.path.join('static/images', filename)
+            file.save(file_path)
+            img = preprocess_image(file_path)
+
+            
+            model1 = create_model()
+            class_prediction = model1.predict(img)
+            predicted_class_index = np.argmax(class_prediction)
+
+    return render_template('image_upload1.html', prediction=predicted_class_index)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     
     return render_template('home.html')
+@app.route('/image1', methods=['GET', 'POST'])
+def image1():
+    
+    return render_template('image_upload1.html')
 
 @app.route('/audio1', methods=['GET', 'POST'])
 def audio1():
