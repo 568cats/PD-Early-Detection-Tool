@@ -2,6 +2,7 @@ from flask import Flask, render_template
 app = Flask(__name__)
 from flask import Flask, render_template, request, redirect, url_for
 from model1 import create_model, preprocess_image
+from model2 import create_model2
 import os
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
@@ -35,8 +36,8 @@ def predict():
 
     return render_template('home.html', prediction=predicted_class_index)
 #2nd image route
-@app.route("/predict", methods = ['GET','POST'])
-def predict():
+@app.route("/predict2", methods = ['GET','POST'])
+def predict2():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -45,9 +46,9 @@ def predict():
             file.save(file_path)
             img = preprocess_image(file_path)
 
-            
-            model1 = create_model()
-            class_prediction = model1.predict(img)
+
+            model2 = create_model2()
+            class_prediction = model2.predict(img)
             predicted_class_index = np.argmax(class_prediction)
 
     return render_template('image_upload1.html', prediction=predicted_class_index)
