@@ -4,24 +4,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>Home Page</title>
 </head>
+<script>
+    function handleButtonClick(event) {
+      var button = event.target;
+      var url = button.getAttribute('href');
+      window.location.href = url;
+    }
+  </script>
 <body>
     <nav>
         <!-- nav bar-->
-        <a href="{{ url_for('PDimage1') }}">PD</a> |
-        <a href="{{ url_for('ADimage1') }}">AD</a> |
+        
         
     </nav>
 
     <h1>Wlecome to the APP!</h1>
 <p>Upload an image to get started.</p>
-<form action = "/predict" method = "post" enctype="multipart/form-data">
-    <label for="file-input" class="file-label">
-        Choose an image
-    </label>
-    <input type="file" id="file-input" name="file">
-    <button type="submit" class="btn">Upload</button>
-</form>
-<p id="prediction">{{ prediction }}</p>
+<div class="buttons">
+    <button type="button" class="btn btn-primary" href="{{ url_for('PDimage1') }}" onclick="handleButtonClick(event)">PD</button> 
+    <button type="button" class="btn btn-secondary" href="{{ url_for('ADimage1') }}" onclick="handleButtonClick(event)">AD</button> 
+</div>
 </form>
 </form>
 </body>
