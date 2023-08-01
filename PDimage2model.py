@@ -23,6 +23,6 @@ def create_model2():
         prediction_layer_3
     ])
 
-    model.load_weights('model2_weights.h5')
+    model.load_weights('PDimage2Model_weights.h5')
 
     return model

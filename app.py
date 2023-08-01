@@ -1,8 +1,8 @@
 from flask import Flask, render_template
 app = Flask(__name__)
 from flask import Flask, render_template, request, redirect, url_for
-from model1 import create_model, preprocess_image
-from model2 import create_model2
+from PDimage1model import create_model, preprocess_image
+from PDimage2model import create_model2
 import os
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
@@ -21,7 +21,7 @@ def init():
     graph = tf.get_default_graph()
 
 # Predict route for the image rec model 
-@app.route("/predict", methods = ['GET','POST'])
+@app.route("/predictPDImage1", methods = ['GET','POST'])
 def predict():
     if request.method == 'POST':
         file = request.files['file']
@@ -34,9 +34,9 @@ def predict():
             class_prediction = model1.predict(img)
             predicted_class_index = np.argmax(class_prediction)
 
-    return render_template('home.html', prediction=predicted_class_index)
+    return render_template('PDimage_upload1.html', prediction=predicted_class_index)
 #2nd image route
-@app.route("/predict2", methods = ['GET','POST'])
+@app.route("/predictPDImage2", methods = ['GET','POST'])
 def predict2():
     if request.method == 'POST':
         file = request.files['file']
@@ -51,27 +51,57 @@ def predict2():
             class_prediction = model2.predict(img)
             predicted_class_index = np.argmax(class_prediction)
 
-    return render_template('image_upload1.html', prediction=predicted_class_index)
-
-
+    return render_template('PDimage_upload2.html', prediction=predicted_class_index)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     
     return render_template('home.html')
-@app.route('/image1', methods=['GET', 'POST'])
-def image1():
+#AD
+@app.route('/ADimage1', methods=['GET', 'POST'])
+def ADimage1():
     
-    return render_template('image_upload1.html')
+    return render_template('ADimage_upload1.html')
 
-@app.route('/audio1', methods=['GET', 'POST'])
-def audio1():
-    
-    return render_template('audio_upload1.html')
 
-@app.route('/audio2', methods=['GET', 'POST'])
-def audio2():
+@app.route('/ADimage2', methods=['GET', 'POST'])
+def ADimage2():
     
-    return render_template('audio_upload2.html')
+    return render_template('ADimage_upload2.html')
+
+
+@app.route('/ADaudio1', methods=['GET', 'POST'])
+def ADaudio1():
+    
+    return render_template('ADaudio_upload1.html')
+
+
+@app.route('/ADaudio2', methods=['GET', 'POST'])
+def ADaudio2():
+    
+    return render_template('ADaudio_upload2.html')
+
+#PD
+@app.route('/PDimage1', methods=['GET', 'POST'])
+def PDimage1():
+    
+    return render_template('PDimage_upload1.html')
+
+
+
+@app.route('/PDimage2', methods=['GET', 'POST'])
+def PDimage2():
+    
+    return render_template('PDimage_upload2.html')
+
+@app.route('/PDaudio1', methods=['GET', 'POST'])
+def PDaudio1():
+    
+    return render_template('PDaudio_upload1.html')
+
+@app.route('/PDaudio2', methods=['GET', 'POST'])
+def PDaudio2():
+    
+    return render_template('PDaudio_upload2.html')
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():

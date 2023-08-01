@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Audio Upload 1</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('PDimage1') }}">Home</a> |
+        <a href="{{ url_for('PDimage2') }}">Image Upload 2</a> |
+        <a href="{{ url_for('PDaudio1') }}">Audio Upload 1</a> |
+        <a href="{{ url_for('PDaudio2') }}">Audio Upload 2</a> |
+        <a href="{{ url_for('result') }}">Result</a>
+    </nav>
+    <h1>Upload your first audio file</h1>
+    <form method="post" enctype="multipart/form-data">
+        <label for="file-input" class="file-label">
+            Choose an image
+        </label>
+        <input type="file" id="file-input" name="file">
+        <button type="submit" class="btn">Upload</button>
+    </form>
+</body>
+</html>
