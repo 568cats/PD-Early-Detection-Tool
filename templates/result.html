@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Home Page</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a> |
+        <a href="{{ url_for('audio1') }}">Audio Upload 1</a> |
+        <a href="{{ url_for('audio2') }}">Audio Upload 2</a> |
+        <a href="{{ url_for('result') }}">Result</a>
+    </nav>
+    <h1>Here are your results!</h1>
