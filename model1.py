@@ -23,7 +23,7 @@ def create_model():
         prediction_layer_3
     ])
 
-    model.load_weights('model_weights1.h5')
+    model.load_weights('model1_weights.h5')
 
     return model
 
