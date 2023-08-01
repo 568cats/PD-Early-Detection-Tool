@@ -37,22 +37,22 @@ def predict():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    # Your logic here
+    
     return render_template('home.html')
 
 @app.route('/audio1', methods=['GET', 'POST'])
 def audio1():
-    # Your logic here
+    
     return render_template('audio_upload1.html')
 
 @app.route('/audio2', methods=['GET', 'POST'])
 def audio2():
-    # Your logic here
+    
     return render_template('audio_upload2.html')
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
-    # Your logic here
+    
     return render_template('result.html')
 
 if __name__ == "__main__":
