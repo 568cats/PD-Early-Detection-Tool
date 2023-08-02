@@ -4,9 +4,9 @@ from flask import Flask, render_template, request, redirect, url_for
 from PDimage1model import create_model, preprocess_image
 from PDimage2model import create_model2
 import os
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
 import numpy as np
+import librosa
+from PDaudio1Model import preprocess_audio, create_audio_model
 
 
 
@@ -93,10 +93,37 @@ def PDimage2():
     
     return render_template('PDimage_upload2.html')
 
+# Handles Parkinson's Disease Audio Classifiction. Accepts either a .wav or mp3 file
+ALLOWED_EXTENSIONS_AUDIO = ['wav', 'mp3']
+# Check if file is valid
+def allowed_audio_file(filename): 
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_AUDIO
+
 @app.route('/PDaudio1', methods=['GET', 'POST'])
 def PDaudio1():
+    predicted_class_index = "Submit a file and click 'Upload' to see your results."  # initialize to default value
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_audio_file(file.filename):
+            filename = file.filename
+            file_path = os.path.join('static/audio', filename)
+            file.save(file_path)
+            
+            # Load the audio file
+            audio, sample_rate = librosa.load(file_path, sr=None)
+
+            # Preprocess the audio file by performing 
+            audio_preprocessed = preprocess_audio(audio)
+
+            # Pass the preprocessed audio file to the model
+            model_audio = create_audio_model()
+            class_prediction = model_audio.predict(audio_preprocessed)
+            predicted_class_index = np.argmax(class_prediction)
+
+    return render_template('PDaudio_upload1.html', prediction=predicted_class_index)
+
     
-    return render_template('PDaudio_upload1.html')
 
 @app.route('/PDaudio2', methods=['GET', 'POST'])
 def PDaudio2():

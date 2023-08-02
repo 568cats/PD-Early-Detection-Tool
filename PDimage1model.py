@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.applications import ResNet50
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.utils import load_img, img_to_array
 import numpy as np
 from tensorflow.keras.applications.resnet50 import preprocess_input
 #Definings the model for the image rec
