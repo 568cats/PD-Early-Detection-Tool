@@ -7,6 +7,7 @@ import os
 import numpy as np
 import librosa
 from PDaudio1Model import preprocess_audio, create_audio_model
+from ADimage1model import create_AD_model_1
 
 
 
@@ -21,6 +22,20 @@ def init():
     graph = tf.get_default_graph()
 
 # Predict route for the image rec model 
+@app.route('/predict_AD_image_1', methods = ['GET', 'POST'])
+def predict_AD_image_1():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file_path = os.path.join('static/images', filename)
+            file.save(file_path)
+            img = preprocess_image(file_path)
+            model1 = create_AD_model_1()
+            class_prediction = model1.predict(img)
+            predicted_class_index = np.argmax(class_prediction)
+    return render_template('ADimage_upload1.html', prediction=predicted_class_index)
+
 @app.route("/predictPDImage1", methods = ['GET','POST'])
 def predict():
     if request.method == 'POST':
