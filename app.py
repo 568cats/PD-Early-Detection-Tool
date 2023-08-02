@@ -8,7 +8,13 @@ import numpy as np
 import librosa
 from PDaudio1Model import preprocess_audio, create_audio_model
 from ADimage1model import create_AD_model_1
-
+from flask import request
+from PIL import Image
+import io
+import base64
+import re
+import numpy as np
+import os
 
 
 
@@ -36,20 +42,45 @@ def predict_AD_image_1():
             predicted_class_index = np.argmax(class_prediction)
     return render_template('ADimage_upload1.html', prediction=predicted_class_index)
 
-@app.route("/predictPDImage1", methods = ['GET','POST'])
-def predict():
+@app.route('/predictPDImage1', methods=['GET', 'POST'])
+def predictPDImage1():
     if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = file.filename
-            file_path = os.path.join('static/images', filename)
-            file.save(file_path)
-            img = preprocess_image(file_path)
-            model1 = create_model()
-            class_prediction = model1.predict(img)
-            predicted_class_index = np.argmax(class_prediction)
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        ImageData = request.form.get('drawing')
 
-    return render_template('PDimage_upload1.html', prediction=predicted_class_index)
+        ImageData = dataUrlPattern.match(ImageData).group(2)
+        if ImageData is None or len(ImageData) == 0:  # If no image data was provided
+            return render_template('home.html', prediction="No image data provided.")
+
+        # We have image data, process it
+        data = base64.b64decode(ImageData)
+        image = Image.open(io.BytesIO(data))
+        filename = "some_unique_filename.png"  # You may want to use a unique filename in production
+        file_path = os.path.join('static/images', filename)
+        image.save(file_path)
+        img = preprocess_image(file_path)
+        model1 = create_AD_model_1()
+        class_prediction = model1.predict(img)
+        predicted_class_index = np.argmax(class_prediction)
+        return render_template('PDimage_upload1.html', prediction=predicted_class_index)
+    
+    # If not POST method
+    return render_template('PDimage_upload1.html')
+
+# @app.route("/predictPDImage1", methods = ['GET','POST'])
+# def predict():
+#     if request.method == 'POST':
+#         file = request.files['file']
+#         if file and allowed_file(file.filename):
+#             filename = file.filename
+#             file_path = os.path.join('static/images', filename)
+#             file.save(file_path)
+#             img = preprocess_image(file_path)
+#             model1 = create_model()
+#             class_prediction = model1.predict(img)
+#             predicted_class_index = np.argmax(class_prediction)
+
+#     return render_template('PDimage_upload1.html', prediction=predicted_class_index)
 #2nd image route
 @app.route("/predictPDImage2", methods = ['GET','POST'])
 def predict2():
