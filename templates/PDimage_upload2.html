@@ -3,6 +3,11 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>Home Page</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -14,17 +19,60 @@
         <a href="{{ url_for('result') }}">Result</a>
     </nav>
 
-    <h1>Upload Your second image</h1>
-<p>Upload an image to get started.</p>
-<form action = "/predictPDImage2" method = "post" enctype="multipart/form-data">
-    <label for="file-input" class="file-label">
-        Choose an image
-    </label>
-    <input type="file" id="file-input" name="file">
-    <button type="submit" class="btn">Upload</button>
-</form>
-<p id="prediction">{{ prediction }}</p>
-</form>
-</form>
+    <h1>Welcome to the PD Testing App</h1>
+
+    <form action = "/predictPDImage1" method = "post" enctype="multipart/form-data">
+        <label for="file-input" class="file-label">
+            Choose an image
+        </label>
+        <input type="file" id="file-input" name="file">
+        <button type="submit" class="btn">Upload</button>
+    </form>
+    <p>Draw an image to get started.</p>
+    
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <button id="clear-canvas">Clear</button>
+
+    <form id="drawing-form" action = "/predictPDImage2" method = "post">
+        <input type="hidden" id="drawing" name="drawing">
+        <button type="submit" class="btn">Submit Drawing</button>
+    </form>
+
+    <p id="prediction">{{ prediction }}</p>
+
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var drawing = false;
+        
+        canvas.addEventListener('mousedown', function(e) {
+            drawing = true;
+            ctx.beginPath();
+        });
+
+        canvas.addEventListener('mousemove', function(e) {
+            if (drawing === false) return;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#3941AE';
+            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            ctx.stroke();
+        });
+        canvas.addEventListener('mouseup', function(e) {
+            drawing = false;
+            document.getElementById('drawing').value = canvas.toDataURL();
+        });
+
+        document.getElementById('clear-canvas').addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        document.getElementById('drawing-form').addEventListener('submit', function(e) {
+            if (document.getElementById('drawing').value === '') {
+                e.preventDefault();
+                alert('Please draw something on the canvas before submitting.');
+            }
+        });
+    </script>
 </body>
 </html>

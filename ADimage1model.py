@@ -28,7 +28,7 @@ def create_AD_model_1():
         prediction_layer_2,
         prediction_layer_3
     ])
-    model.load_weights('AD_model_image_1.h5')
+    # model.load_weights('AD_model_image_1.h5')
     return model
 
 def preprocess_image(image_path):
