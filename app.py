@@ -67,21 +67,21 @@ def predictPDImage1():
     # If not POST method
     return render_template('PDimage_upload1.html')
 
-# @app.route("/predictPDImage1", methods = ['GET','POST'])
-# def predict():
-#     if request.method == 'POST':
-#         file = request.files['file']
-#         if file and allowed_file(file.filename):
-#             filename = file.filename
-#             file_path = os.path.join('static/images', filename)
-#             file.save(file_path)
-#             img = preprocess_image(file_path)
-#             model1 = create_model()
-#             class_prediction = model1.predict(img)
-#             predicted_class_index = np.argmax(class_prediction)
+@app.route("/predictPDImage11", methods = ['GET','POST'])
+def predict():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file_path = os.path.join('static/images', filename)
+            file.save(file_path)
+            img = preprocess_image(file_path)
+            model1 = create_model()
+            class_prediction = model1.predict(img)
+            predicted_class_index = np.argmax(class_prediction)
 
-#     return render_template('PDimage_upload1.html', prediction=predicted_class_index)
-#2nd image route
+    return render_template('PDimage_upload1.html', prediction=predicted_class_index)
+
 
 
 @app.route('/predictPDImage2', methods=['GET', 'POST'])
@@ -108,22 +108,22 @@ def predictPDImage2():
     
     # If not POST method
     return render_template('PDimage_upload1.html')
-# @app.route("/predictPDImage2", methods = ['GET','POST'])
-# def predict2():
-#     if request.method == 'POST':
-#         file = request.files['file']
-#         if file and allowed_file(file.filename):
-#             filename = file.filename
-#             file_path = os.path.join('static/images', filename)
-#             file.save(file_path)
-#             img = preprocess_image(file_path)
+@app.route("/predictPDImage22", methods = ['GET','POST'])
+def predict2():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file_path = os.path.join('static/images', filename)
+            file.save(file_path)
+            img = preprocess_image(file_path)
 
 
-#             model2 = create_model2()
-#             class_prediction = model2.predict(img)
-#             predicted_class_index = np.argmax(class_prediction)
+            model2 = create_model2()
+            class_prediction = model2.predict(img)
+            predicted_class_index = np.argmax(class_prediction)
 
-#     return render_template('PDimage_upload2.html', prediction=predicted_class_index)
+    return render_template('PDimage_upload2.html', prediction=predicted_class_index)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     
