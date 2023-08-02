@@ -63,10 +63,6 @@ def ADimage1():
     return render_template('ADimage_upload1.html')
 
 
-@app.route('/ADimage2', methods=['GET', 'POST'])
-def ADimage2():
-    
-    return render_template('ADimage_upload2.html')
 
 
 @app.route('/ADaudio1', methods=['GET', 'POST'])
@@ -75,10 +71,6 @@ def ADaudio1():
     return render_template('ADaudio_upload1.html')
 
 
-@app.route('/ADaudio2', methods=['GET', 'POST'])
-def ADaudio2():
-    
-    return render_template('ADaudio_upload2.html')
 
 #PD
 @app.route('/PDimage1', methods=['GET', 'POST'])
@@ -125,10 +117,6 @@ def PDaudio1():
 
     
 
-@app.route('/PDaudio2', methods=['GET', 'POST'])
-def PDaudio2():
-    
-    return render_template('PDaudio_upload2.html')
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
