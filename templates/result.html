@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_PD.css') }}">
     <title>Home Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <nav>
@@ -18,4 +19,39 @@
     <p id="prediction PDImage1">{{PDprediction11}}</p>
     <p id="prediction PDImage2">{{PDprediction2}}</p>
     <p id="prediction PDImage2">{{PDprediction22}}</p>
+    <p id="prediction audio">{{PDpredictionAudio}}</p>
+
+    <canvas id="predictionChart"></canvas>
     
+    <script>
+        var predictionData = JSON.parse('{{ PDprediction1 | tojson | safe}}');
+        var ctx = document.getElementById('predictionChart').getContext('2d');
+       
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['0', '1'],
+                datasets: [{
+                    label: 'Prediction',
+                    data: predictionData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
