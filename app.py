@@ -80,7 +80,7 @@ def predict():
             img = preprocess_image(file_path)
             model1 = create_model()
             class_prediction = model1.predict(img)
-            session['PDprediction11'] = class_prediction.flatten().tolist()
+            session['PDprediction1'] = class_prediction.flatten().tolist()
             predicted_class_index = np.argmax(class_prediction)
 
     return render_template('PDimage_upload1.html', prediction=predicted_class_index)
@@ -125,7 +125,7 @@ def predictPDImage22():
 
             model2 = create_model2()
             class_prediction = model2.predict(img)
-            session['PDprediction22'] = class_prediction.flatten().tolist()
+            session['PDprediction2'] = class_prediction.flatten().tolist()
             predicted_class_index = np.argmax(class_prediction)
 
     return render_template('PDimage_upload2.html', prediction=predicted_class_index)
@@ -206,7 +206,7 @@ def result():
     PDpredictionAudio = np.array(session.get('PDpredictionAudio')).tolist()
 
     # Pass the predictions into the template
-    return render_template('result.html', PDprediction1 = PDprediction1, PDprediction11 = PDprediction11, PDprediction2 = PDprediction2, PDprediction22 = PDprediction22, PDpredictionAudio= PDpredictionAudio)
+    return render_template('result.html', PDprediction1 = PDprediction1, PDprediction2 = PDprediction2, PDpredictionAudio= PDpredictionAudio)
 
 if __name__ == "__main__":
     app.run(debug=True)
