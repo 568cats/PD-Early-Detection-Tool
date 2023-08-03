@@ -142,10 +142,33 @@ def ADimage1():
 
 
 
+ALLOWED_EXTENSIONS_AD_AUDIO = ['wav']
+def allowed_ad_audio_file(filename): 
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_AD_AUDIO
+
 @app.route('/ADaudio1', methods=['GET', 'POST'])
 def ADaudio1():
-    
-    return render_template('ADaudio_upload1.html')
+    predicted_class_index = "Submit a file and click 'Upload' to see your results."  # initialize to default value
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_ad_audio_file(file.filename):
+            filename = file.filename
+            file_path = os.path.join('static/audio', filename)
+            file.save(file_path)
+            
+            # Load the audio file
+            audio, sample_rate = librosa.load(file_path, sr=None)
+
+            # Preprocess the audio file by performing 
+            audio_preprocessed = preprocess_ad_audio(audio)
+
+            # Pass the preprocessed audio file to the model
+            model_audio = ad_audio_model()
+            class_prediction = model_audio.predict(audio_preprocessed)
+            predicted_class_index = np.argmax(class_prediction)
+            #os.remove(file_path)
+    return render_template('ADaudio_upload1.html', prediction=predicted_class_index)
 
 
 
