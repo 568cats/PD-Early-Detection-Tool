@@ -44,7 +44,15 @@
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
         var drawing = false;
-        
+        var img = new Image();
+
+        // Specify the source of the image
+        img.src = "{{ url_for('static', filename='images/spiral.png') }}";
+
+        // Draw the image on the canvas once it's loaded
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
         canvas.addEventListener('mousedown', function(e) {
             drawing = true;
             ctx.beginPath();
