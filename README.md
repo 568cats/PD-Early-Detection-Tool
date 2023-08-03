@@ -3,7 +3,7 @@ This MIT BeaverWorks Summer Institute project deploys a web app for cost-effecti
 
 [Presentation](https://docs.google.com/presentation/d/1ZK3kYYD16mHyCOvEHSkoBcZiyBDXdY3znspyQBfPXmg/edit?usp=sharing)
 
-Build instructions: 
+# Build instructions: 
   1.Clone Repository
   2.Pip install -r requirements.txt
   3.Run python3 app.py
