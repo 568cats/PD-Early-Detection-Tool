@@ -27,6 +27,12 @@ def allowed_file(filename):
 def init():
     global graph
     graph = tf.get_default_graph()
+@app.route('/clear', methods=['POST'])
+def clear_session():
+
+    session.clear()
+
+    return redirect(url_for('home'))
 
 # Predict route for the image rec model 
 @app.route('/predict_AD_image_1', methods = ['GET', 'POST'])
@@ -40,6 +46,7 @@ def predict_AD_image_1():
             img = preprocess_image(file_path)
             model1 = create_AD_model_1()
             class_prediction = model1.predict(img)
+            session['ADprediction1'] = class_prediction.flatten().tolist()
             predicted_class_index = np.argmax(class_prediction)
     return render_template('ADimage_upload1.html', prediction=predicted_class_index)
 
@@ -166,6 +173,7 @@ def ADaudio1():
             # Pass the preprocessed audio file to the model
             model_audio = ad_audio_model()
             class_prediction = model_audio.predict(audio_preprocessed)
+            session['ADprediction2'] = class_prediction.flatten().tolist()
             predicted_class_index = np.argmax(class_prediction)
             #os.remove(file_path)
     return render_template('ADaudio_upload1.html', prediction=predicted_class_index)
@@ -219,8 +227,8 @@ def PDaudio1():
     
 
 
-@app.route('/result', methods=['GET'])
-def result():
+@app.route('/PDresult', methods=['GET'])
+def PDresult():
     # Fetch the predictions from the session
     PDprediction1 = np.array(session.get('PDprediction1')).tolist()
     PDprediction11 = np.array(session.get('PDprediction11')).tolist()
@@ -229,7 +237,17 @@ def result():
     PDpredictionAudio = np.array(session.get('PDpredictionAudio')).tolist()
 
     # Pass the predictions into the template
-    return render_template('result.html', PDprediction1 = PDprediction1, PDprediction2 = PDprediction2, PDpredictionAudio= PDpredictionAudio)
+    return render_template('PDresult.html', PDprediction1 = PDprediction1, PDprediction2 = PDprediction2, PDpredictionAudio= PDpredictionAudio)
 
+
+@app.route('/ADresult', methods=['GET'])
+def ADresult():
+    # Fetch the predictions from the session
+    ADprediction1 = np.array(session.get('ADprediction1')).tolist()
+    ADprediction2 = np.array(session.get('ADprediction2')).tolist()
+    
+
+    # Pass the predictions into the template
+    return render_template('ADresult.html', ADprediction1 = ADprediction1, ADprediction2 = ADprediction2)
 if __name__ == "__main__":
     app.run(debug=True)
