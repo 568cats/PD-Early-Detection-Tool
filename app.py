@@ -15,9 +15,10 @@ import base64
 import re
 import numpy as np
 import os
+from flask import session
 
-
-
+app = Flask(__name__)
+app.secret_key = 'secret'
 # Image rec model is model1
 ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
 def allowed_file(filename):
@@ -61,6 +62,7 @@ def predictPDImage1():
         img = preprocess_image(file_path)
         model1 = create_AD_model_1()
         class_prediction = model1.predict(img)
+        session['PDprediction1'] = class_prediction.tolist()
         predicted_class_index = np.argmax(class_prediction)
         return render_template('PDimage_upload1.html', prediction=predicted_class_index)
     
@@ -78,6 +80,7 @@ def predict():
             img = preprocess_image(file_path)
             model1 = create_model()
             class_prediction = model1.predict(img)
+            session['PDprediction11'] = class_prediction.tolist()
             predicted_class_index = np.argmax(class_prediction)
 
     return render_template('PDimage_upload1.html', prediction=predicted_class_index)
@@ -103,13 +106,14 @@ def predictPDImage2():
         img = preprocess_image(file_path)
         model1 = create_AD_model_1()
         class_prediction = model1.predict(img)
+        session['PDprediction2'] = class_prediction.tolist()
         predicted_class_index = np.argmax(class_prediction)
         return render_template('PDimage_upload1.html', prediction=predicted_class_index)
     
     # If not POST method
     return render_template('PDimage_upload1.html')
 @app.route("/predictPDImage22", methods = ['GET','POST'])
-def predict2():
+def predictPDImage22():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -121,6 +125,7 @@ def predict2():
 
             model2 = create_model2()
             class_prediction = model2.predict(img)
+            session['PDprediction22'] = class_prediction.tolist()
             predicted_class_index = np.argmax(class_prediction)
 
     return render_template('PDimage_upload2.html', prediction=predicted_class_index)
@@ -190,10 +195,15 @@ def PDaudio1():
     
 
 
-@app.route('/result', methods=['GET', 'POST'])
+@app.route('/result', methods=['GET'])
 def result():
-    
-    return render_template('result.html')
+    # Fetch the predictions from the session
+    PDprediction1 = np.array(session.get('PDprediction1'))
+    PDprediction11 = np.array(session.get('PDprediction11'))
+    PDprediction2 = np.array(session.get('PDprediction2'))
+    PDprediction22 = np.array(session.get('PDprediction22'))
+    # Pass the predictions into the template
+    return render_template('result.html', PDprediction1 = PDprediction1, PDprediction11 = PDprediction11, PDprediction2 = PDprediction2, PDprediction22 = PDprediction22)
 
 if __name__ == "__main__":
     app.run(debug=True)
