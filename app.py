@@ -8,6 +8,7 @@ import numpy as np
 import librosa
 from PDaudio1Model import preprocess_audio, create_audio_model
 from ADimage1model import create_AD_model_1
+from ADaudio1model import preprocess_ad_audio, ad_audio_model
 from flask import request, jsonify
 from PIL import Image
 import io
@@ -16,6 +17,9 @@ import re
 import numpy as np
 import os
 from flask import session
+
+
+
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -149,7 +153,7 @@ def ADimage1():
 
 
 
-ALLOWED_EXTENSIONS_AD_AUDIO = ['wav']
+ALLOWED_EXTENSIONS_AD_AUDIO = ['wav', 'mp3']
 def allowed_ad_audio_file(filename): 
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_AD_AUDIO
@@ -172,8 +176,8 @@ def ADaudio1():
 
             # Pass the preprocessed audio file to the model
             model_audio = ad_audio_model()
-            class_prediction = model_audio.predict(audio_preprocessed)
-            session['ADprediction2'] = class_prediction.flatten().tolist()
+            class_prediction = model_audio.predict_proba(audio_preprocessed.reshape(1, -1))
+            session['ADprediction2'] = class_prediction.tolist()
             predicted_class_index = np.argmax(class_prediction)
             #os.remove(file_path)
     return render_template('ADaudio_upload1.html', prediction=predicted_class_index)
@@ -217,8 +221,19 @@ def PDaudio1():
             audio_preprocessed = preprocess_audio(audio)
 
             # Pass the preprocessed audio file to the model
+
+            
+            #just a quick test if the model works
+            exampleFeature = np.array([-1.53323887, -1.20521085, -1.11614902, -1.20484865, -1.76998794,
+        0.31389406, -0.72827947, -0.38706982, -1.32216396])
+            
             model_audio = create_audio_model()
-            class_prediction = model_audio.flatten().predict(audio_preprocessed)
+            class_prediction = model_audio.predict(exampleFeature.reshape(1, -1))
+
+            #session['PDpredictionAudio'] = class_prediction.tolist()
+
+            model_audio = create_audio_model()
+            #class_prediction = model_audio.predict(audio_preprocessed)
             session['PDpredictionAudio'] = class_prediction.tolist()
             predicted_class_index = np.argmax(class_prediction)
 
@@ -237,7 +252,7 @@ def PDresult():
     PDpredictionAudio = np.array(session.get('PDpredictionAudio')).tolist()
 
     # Pass the predictions into the template
-    return render_template('PDresult.html', PDprediction1 = PDprediction1, PDprediction2 = PDprediction2, PDpredictionAudio= PDpredictionAudio)
+    return render_template('PDresult.html', PDprediction1 = PDprediction1, PDprediction2 = PDprediction2, PDpredictionAudio= PDpredictionAudio[0])
 
 
 @app.route('/ADresult', methods=['GET'])
@@ -248,6 +263,6 @@ def ADresult():
     
 
     # Pass the predictions into the template
-    return render_template('ADresult.html', ADprediction1 = ADprediction1, ADprediction2 = ADprediction2)
+    return render_template('ADresult.html', ADprediction1 = ADprediction1, ADprediction2 = ADprediction2[0])
 if __name__ == "__main__":
     app.run(debug=True)

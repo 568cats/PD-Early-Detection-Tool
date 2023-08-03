@@ -1,21 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_PD.css') }}">
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles_PD.css') }}"
+    />
     <title>Home Page</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <nav>
-        <a href="{{ url_for('home') }}">Home</a> |
-        <a href="{{ url_for('PDimage1') }}">Image Upload 1</a> |
-        <a href="{{ url_for('PDimage2') }}">Image Upload 2</a> |
-        <a href="{{ url_for('PDaudio1') }}">Audio Upload 1</a> |
-        <a href="{{ url_for('PDresult') }}">Result</a>
+      <a href="{{ url_for('home') }}">Home</a> |
+      <a href="{{ url_for('PDimage1') }}">Image Upload 1</a> |
+      <a href="{{ url_for('PDimage2') }}">Image Upload 2</a> |
+      <a href="{{ url_for('PDaudio1') }}">Audio Upload 1</a> |
+      <a href="{{ url_for('PDresult') }}">Result</a>
     </nav>
     <form action="{{ url_for('clear_session') }}" method="post">
-        <button type="submit">Clear Session</button>
+      <button type="submit">Clear Session</button>
     </form>
     <h3>PDImage1 Prediction</h3>
     <canvas id="predictionChart1"></canvas>
@@ -26,80 +29,99 @@
     <h3>Audio Prediction</h3>
     <canvas id="predictionChartAudio"></canvas>
 
-        <script>
-            // PDImage1 Chart
-            var ctx1 = document.getElementById('predictionChart1').getContext('2d');
-            var predictionData1 = JSON.parse('{{ PDprediction1 | tojson | safe}}');
-            new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: ['0', '1'],
-                    datasets: [{
-                        label: 'Prediction1',
-                        data: predictionData1,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-    
-            // PDImage2 Chart
-            var ctx2 = document.getElementById('predictionChart2').getContext('2d');
-            var predictionData2 = JSON.parse('{{ PDprediction2 | tojson | safe}}');
-            new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['0', '1'],
-                    datasets: [{
-                        label: 'Prediction2',
-                        data: predictionData2,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-    
-            // Audio Chart
-            var ctxAudio = document.getElementById('predictionChartAudio').getContext('2d');
-            var predictionDataAudio = JSON.parse('{{ PDpredictionAudio | tojson | safe}}');
-            new Chart(ctxAudio, {
-                type: 'bar',
-                data: {
-                    labels: ['0', '1'],
-                    datasets: [{
-                        label: 'Audio Prediction',
-                        data: predictionDataAudio,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        </script>
-        
+    <script>
+      // PDImage1 Chart
+      var ctx1 = document.getElementById("predictionChart1").getContext("2d");
+      var predictionData1 = JSON.parse("{{ PDprediction1 | tojson | safe}}");
 
-        
-    </body>
+      new Chart(ctx1, {
+        type: "bar",
+        data: {
+          labels: ["0", "1"],
+          datasets: [
+            {
+              label: "Prediction1",
+              data: predictionData1,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+              ],
+              borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      // PDImage2 Chart
+      var ctx2 = document.getElementById("predictionChart2").getContext("2d");
+      var predictionData2 = JSON.parse("{{ PDprediction2 | tojson | safe}}");
+      new Chart(ctx2, {
+        type: "bar",
+        data: {
+          labels: ["0", "1"],
+          datasets: [
+            {
+              label: "Prediction2",
+              data: predictionData2,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+              ],
+              borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      // Audio Chart
+      var ctxAudio = document
+        .getElementById("predictionChartAudio")
+        .getContext("2d");
+      var predictionDataAudio = JSON.parse(
+        "{{ PDpredictionAudio | tojson | safe}}"
+      );
+      console.log(predictionDataAudio);
+      new Chart(ctxAudio, {
+        type: "bar",
+        data: {
+          labels: ["0", "1"],
+          datasets: [
+            {
+              label: "Audio Prediction",
+              data: predictionDataAudio,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+              ],
+              borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
