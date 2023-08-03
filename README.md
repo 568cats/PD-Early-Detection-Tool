@@ -1,12 +1,11 @@
 # SynapticSense
+This MIT BeaverWorks Summer Institute project deploys a web app for cost-effective Parkinson's and Alzheimer's diagnoses. It uses Convolutional Neural Networks (CNNs) and advanced audio processing for broader healthcare access. Its robustness is confirmed through rigorous testing on diverse models and datasets, ensuring reliable diagnostics.
+
+
 Build instructions: 
-  1. Pip install -r requirements.txt
-  2. Clone the repository and run python3 app.py
-
-BWSI project to create a cheap and accurate way to diagnose Parkinsons' Disease and Alzheimer's Disease.  Uses CNNs and Audio processing techniques to create a web application
-
-
-
+  1.Clone Repository
+  2.Pip install -r requirements.txt
+  3.Run python3 app.py
 
 
 Data:
