@@ -14,16 +14,16 @@
         <a href="{{ url_for('PDaudio1') }}">Audio Upload 1</a> |
         <a href="{{ url_for('result') }}">Result</a>
     </nav>
-    <body>
-        <h3>PDImage1 Prediction</h3>
-        <canvas id="predictionChart1"></canvas>
-    
-        <h3>PDImage2 Prediction</h3>
-        <canvas id="predictionChart2"></canvas>
-    
-        <h3>Audio Prediction</h3>
-        <canvas id="predictionChartAudio"></canvas>
-    
+
+    <h3>PDImage1 Prediction</h3>
+    <canvas id="predictionChart1"></canvas>
+
+    <h3>PDImage2 Prediction</h3>
+    <canvas id="predictionChart2"></canvas>
+
+    <h3>Audio Prediction</h3>
+    <canvas id="predictionChartAudio"></canvas>
+
         <script>
             // PDImage1 Chart
             var ctx1 = document.getElementById('predictionChart1').getContext('2d');
@@ -97,4 +97,7 @@
                 }
             });
         </script>
+        
+
+        
     </body>
