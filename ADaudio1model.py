@@ -20,7 +20,7 @@ def preprocess_ad_audio(path):
     total_frames = parselmouth.praat.call(pp, "Get number of points")
     fraction_locally_unvoiced_frames = num_unvoiced_frames / total_frames if total_frames else 0
 
-    X_features = np.array([fraction_locally_unvoiced_frames)
+    X_features = np.array([fraction_locally_unvoiced_frames])
     
     return X_features
 
